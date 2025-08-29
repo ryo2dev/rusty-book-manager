@@ -1,8 +1,8 @@
 use std::net::{Ipv4Addr, SocketAddr};
 
 use anyhow::Result;
-use axum::{extract::State, http::StatusCode, routing::get, Router};
-use sqlx::{postgres::PgConnectOptions, PgPool};
+use axum::{Router, extract::State, http::StatusCode, routing::get};
+use sqlx::{PgPool, postgres::PgConnectOptions};
 use tokio::net::TcpListener;
 
 struct DatabaseConfig {
