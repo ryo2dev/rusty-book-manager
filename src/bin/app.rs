@@ -2,7 +2,10 @@ use std::net::{Ipv4Addr, SocketAddr};
 
 use adapter::database::connect_database_with;
 use anyhow::{Error, Result};
-use api::route::health::build_health_check_routers;
+use api::route::{
+    book::build_book_rounters,
+    health::build_health_check_routers,
+};
 use axum::Router;
 use registry::AppRegistry;
 use shared::config::AppConfig;
@@ -26,6 +29,7 @@ async fn bootstrap() -> Result<()> {
     // 5) `build_health_check_routers`関数を呼び出す。`AppRegistry` を `Router` に登録しておく。
     let app = Router::new()
         .merge(build_health_check_routers())
+        .merge(build_book_rounters())
         .with_state(registry);
 
     // 6) サーバーを起動する。
