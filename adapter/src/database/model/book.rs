@@ -17,7 +17,7 @@ impl From<BookRow> for Book {
             title,
             author,
             isbn,
-            description, 
+            description,
         } = value;
         Self {
             id: book_id,

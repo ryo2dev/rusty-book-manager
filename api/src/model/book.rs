@@ -1,4 +1,4 @@
-use kernel::model::book::{event::CreateBook, Book};
+use kernel::model::book::{Book, event::CreateBook};
 use serde::{Deserialize, Serialize};
 use uuid::Uuid;
 

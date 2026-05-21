@@ -80,7 +80,6 @@ mod tests {
 
     #[sqlx::test]
     async fn test_register_book(pool: sqlx::PgPool) -> anyhow::Result<()> {
-
         // BookRepositoryImpl を初期化
         let repo = BookRepositoryImpl::new(ConnectionPool::new(pool));
 
@@ -112,7 +111,7 @@ mod tests {
             title,
             author,
             isbn,
-            description ,
+            description,
         } = res.unwrap();
         assert_eq!(id, book_id);
         assert_eq!(title, "Test Title");
