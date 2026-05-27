@@ -8,16 +8,14 @@ use registry::AppRegistry;
 use shared::config::AppConfig;
 use tokio::net::TcpListener;
 
-use shared::env::{which, Environment};
+use shared::env::{Environment, which};
+use tracing_subscriber::EnvFilter;
 use tracing_subscriber::layer::SubscriberExt;
 use tracing_subscriber::util::SubscriberInitExt;
-use tracing_subscriber::EnvFilter;
 
 use anyhow::Context;
-use tower_http::trace::{
-    DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer,
-};
 use tower_http::LatencyUnit;
+use tower_http::trace::{DefaultMakeSpan, DefaultOnRequest, DefaultOnResponse, TraceLayer};
 use tracing::Level;
 
 #[tokio::main]
@@ -34,8 +32,7 @@ fn init_logger() -> Result<()> {
     };
 
     // ログレベルを設定
-    let env_filter =
-        EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
+    let env_filter = EnvFilter::try_from_default_env().unwrap_or_else(|_| log_level.into());
 
     // ログの出力形式を設定
     let subscriber = tracing_subscriber::fmt::layer()

@@ -27,7 +27,7 @@ async-trait = "0.1.74"
 anyhow = "1.0.75"
 axum = { version = "0.7.5", features = ["macros"] }
 derive-new = "0.6.0"
-utopia = { version = "4.1.0", features = ["axum_extras", "uuid", "chrono"] }
+utoipa = { version = "4.1.0", features = ["axum_extras", "uuid", "chrono"] }
 uuid = { version = "1.4.0", features = ["v4", "serde"] }
 chrono = { version = "0.4.26", default-features = false, features = ["serde"] }
 serde = { version = "1.0.174", features = ["derive"] }
@@ -61,8 +61,8 @@ registry.workspace = true
 shared.workspace = true
 anyhow.workspace = true
 axum.workspace = true
-utopia.workspace = true
-utopia-redoc = { version = "2.0.0", features = ["axum"] }
+utoipa.workspace = true
+utoipa-redoc = { version = "2.0.0", features = ["axum"] }
 tracing.workspace = true
 tracing-subscriber = { version = "0.3.18", features = ["env-filter", "json"] }
 opentelemetry = "0.21.0"

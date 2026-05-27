@@ -1,8 +1,8 @@
-use anyhow::Result;
 use async_trait::async_trait;
 use derive_new::new;
 use kernel::model::book::{Book, event::CreateBook};
 use kernel::repository::book::BookRepository;
+use shared::error::AppResult;
 use uuid::Uuid;
 
 use crate::database::ConnectionPool;
@@ -15,7 +15,7 @@ pub struct BookRepositoryImpl {
 
 #[async_trait]
 impl BookRepository for BookRepositoryImpl {
-    async fn create(&self, event: CreateBook) -> Result<()> {
+    async fn create(&self, event: CreateBook) -> AppResult<()> {
         sqlx::query!(
             r#"
                 INSERT INTO books (title, author, isbn, description)
@@ -27,12 +27,14 @@ impl BookRepository for BookRepositoryImpl {
             event.description
         )
         .execute(self.db.inner_ref())
-        .await?;
+        .await
+        // sqlx::Error型をAppError型に変換
+        .map_err(AppError::SpecificOperationError)?;
 
         Ok(())
     }
 
-    async fn find_all(&self) -> Result<Vec<Book>> {
+    async fn find_all(&self) -> AppResult<Vec<Book>> {
         let rows: Vec<BookRow> = sqlx::query_as!(
             BookRow,
             r#"
@@ -47,12 +49,13 @@ impl BookRepository for BookRepositoryImpl {
             "#
         )
         .fetch_all(self.db.inner_ref())
-        .await?;
+        .await
+        .map_err(AppError::SpecificOperationError)?;
 
         Ok(rows.into_iter().map(Book::from).collect())
     }
 
-    async fn find_by_id(&self, book_id: Uuid) -> Result<Option<Book>> {
+    async fn find_by_id(&self, book_id: Uuid) -> AppResult<Option<Book>> {
         let row: Option<BookRow> = sqlx::query_as!(
             BookRow,
             r#"
@@ -68,7 +71,8 @@ impl BookRepository for BookRepositoryImpl {
             book_id
         )
         .fetch_optional(self.db.inner_ref())
-        .await?;
+        .await
+        .map_err(AppError::SpecificOperationError)?;
 
         Ok(row.map(Book::from))
     }
