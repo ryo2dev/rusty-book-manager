@@ -2003,6 +2003,7 @@ dependencies = [
  "opentelemetry-jaeger",
  "registry",
  "shared",
+ "tokio",
  "tower-http",
  "tracing",
  "tracing-opentelemetry",
